@@ -1,5 +1,7 @@
 # JSON-Slim
 
+[![Build Status](https://travis-ci.org/arminrosu/json-slim.svg?branch=master)](https://travis-ci.org/arminrosu/json-slim)
+
 Minify JSON better than JSON.stringify().
 
 It achieves this by converting Numbers, number Strings and Booleans to a shorter form. You should be aware of this in your application, type checks might fail.
@@ -25,6 +27,7 @@ var json = slim({
 	// You can add your own minifiers too
 	minifiers: [
 		{
+			// RegExp Pattern
 			pattern: '"Tom Marvolo Riddle"',
 			replace: function(string) {
 				return '"I am Lord Voldemort"';
