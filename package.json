@@ -1,20 +1,20 @@
 {
-	"name": "json-slim",
-	"version": "0.1.0",
-	"description": "Minify JSON better than JSON.stringify()",
-	"main": "index.js",
-	"scripts": {
-		"test": "node test.js"
-	},
-	"keywords": [
-		"json",
-		"minify",
-		"compress",
-		"uglify",
-		"small",
-		"slim",
-		"kate-moss"
-	],
-	"author": "Armin Roșu <hello@armin.ro> (http://armin.ro)",
-	"license": "MIT"
+  "name": "json-slim",
+  "version": "0.2.0",
+  "description": "Minify JSON better than JSON.stringify()",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "json",
+    "minify",
+    "compress",
+    "uglify",
+    "small",
+    "slim",
+    "kate-moss"
+  ],
+  "author": "Armin Roșu <hello@armin.ro> (http://armin.ro)",
+  "license": "MIT"
 }
