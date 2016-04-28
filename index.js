@@ -56,7 +56,7 @@ module.exports = function() {
 	 * @return {Object[]} - Array of matched values, with index
 	 */
 	var getMatches = function(string, pattern) {
-		var regexp  = new RegExp('(?:[^\\\\]": ?)(' + pattern + ')(?:,|\\})', 'g');
+		var regexp  = new RegExp('(?:[^\\\\]":|\\[?)(' + pattern + ')(?:[,\\]\\}])', 'g');
 		var matches = [];
 		var match   = regexp.exec(string);
 
