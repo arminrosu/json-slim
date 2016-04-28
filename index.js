@@ -1,12 +1,11 @@
 module.exports = function() {
 	/**
-	 * Minify values in JSON.
-	 * Doesn't minify the JSON. Use JSON.stringify() without `space` parameter for that.
+	 * Minify a JSON object or string.
 	 * @param  {string|object|array} json - JSON string to minify.
 	 * @param  {object} options
 	 * @return {string}
 	 */
-	var minifyOutput = function(input, options) {
+	var slim = function(input, options) {
 		options = options || {};
 
 		var json        = '';
@@ -22,15 +21,8 @@ module.exports = function() {
 
 		json = JSON.stringify(input);
 
-		// Minify Numbers
-		var numbers = getNumbers(json);
-		numbers.reverse();
-
-		// Replace them for shorter versions
-		// In reverse order so we don't affect indexes
-		numbers.forEach(function(match) {
-			json = spliceStrings(json, match.string, minifyNumber(match.string), match.index);
-		});
+		// Apply minification functions
+		json = parseValues(json, '("?[\\d\\.eE\\+\\-]+"?)', slimNumber);
 
 		if (options.report) {
 			console.log('JSON-Slim: ' + Math.floor(json.length / inputString.length * 100) + '% of original.');
@@ -40,12 +32,13 @@ module.exports = function() {
 	};
 
 	/**
-	 * Find all Number values in a JSON
-	 * @param  {string} string
-	 * @return {Object[]} - Array of matched numers, with index
+	 * Find all matching values in a JSON
+	 * @param  {string} string - JSON string
+	 * @param  {string} pattern - RegExp pattern to look for
+	 * @return {Object[]} - Array of matched values, with index
 	 */
-	var getNumbers = function(string) {
-		var regexp  = /(?:[^\\]": ?)("?[\d\.eE\+\-]+"?)(?:,|\})/g;
+	var getMatches = function(string, pattern) {
+		var regexp  = new RegExp('(?:[^\\\\]": ?)' + pattern + '(?:,|\\})', 'g');
 		var matches = [];
 		var match   = regexp.exec(string);
 
@@ -73,11 +66,41 @@ module.exports = function() {
 	};
 
 	/**
+	 * Find values in a json and apply a callback to them
+	 * @param  {string}   json
+	 * @param  {string}   pattern - RegExp pattern to match values
+	 * @param  {Function} callback
+	 * @return {string}
+	 */
+	var parseValues = function(json, pattern, callback) {
+		var matches = getMatches(json, pattern);
+		matches.reverse();
+
+		// Replace them with shorter versions
+		// In reverse order so we don't affect indexes
+		matches.forEach(function(match) {
+			json = spliceStrings(json, match.string, callback(match.string), match.index);
+		});
+
+		return json;
+	};
+
+	/**
+	 * Check if a string contains a number.
+	 * @see {@link http://stackoverflow.com/a/35759874/584441|Stackoverflow source}
+	 * @param  {string} string
+	 * @return {Boolean}
+	 */
+	var isNumber = function(string) {
+		return !isNaN(string) && !isNaN(parseFloat(string));
+	};
+
+	/**
 	 * Represent Number in a shorter form
 	 * @param  {string} input
 	 * @return {string}
 	 */
-	var minifyNumber = function(input) {
+	var slimNumber = function(input) {
 		var string = input.replace(/"/g, '');
 
 		if (!isNumber(string)) {
@@ -103,15 +126,5 @@ module.exports = function() {
 		return value.toString().length > string.length ? string : value.toString();
 	};
 
-	/**
-	 * Check if a string contains a number.
-	 * @see {@link http://stackoverflow.com/a/35759874/584441|Stackoverflow source}
-	 * @param  {string} string
-	 * @return {Boolean}
-	 */
-	var isNumber = function(string) {
-		return !isNaN(string) && !isNaN(parseFloat(string));
-	};
-
-	return minifyOutput;
+	return slim;
 }();
