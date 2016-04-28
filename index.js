@@ -23,6 +23,9 @@ module.exports = function() {
 
 		// Apply minification functions
 		json = parseValues(json, '("?[\\d\\.eE\\+\\-]+"?)', slimNumber);
+		json = parseValues(json, '(false|true)', slimBoolean);
+
+		// @NOTE Here you could add support for custom slimming functions ;)
 
 		if (options.report) {
 			console.log('JSON-Slim: ' + Math.floor(json.length / inputString.length * 100) + '% of original.');
@@ -34,7 +37,7 @@ module.exports = function() {
 	/**
 	 * Find all matching values in a JSON
 	 * @param  {string} string - JSON string
-	 * @param  {string} pattern - RegExp pattern to look for
+	 * @param  {string} pattern - RegExp pattern that matches the value (only!)
 	 * @return {Object[]} - Array of matched values, with index
 	 */
 	var getMatches = function(string, pattern) {
@@ -115,6 +118,19 @@ module.exports = function() {
 		}
 
 		return value.toString().length > string.length ? string : value.toString();
+	};
+
+	/**
+	 * Represent Booleans as Integers
+	 * @param  {string} input
+	 * @return {string}
+	 */
+	var slimBoolean = function(input) {
+		if (input === 'true') {
+			return '1';
+		}
+
+		return '0';
 	};
 
 	return slim;
