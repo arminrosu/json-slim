@@ -17,9 +17,20 @@ var json = slim({
 	decimalFraction:       0.00123,
 	decimalFractionString: '0.00123',
 	exponent:              1.23E+5,
-	exponentString:        '1.23e+5'
+	exponentString:        '1.23e+5',
+	customField:           'Tom Marvolo Riddle'
 }, {
-	report: true
+	// JSON-slim reports only to you, how good a job it did.
+	report:    true,
+	// You can add your own minifiers too
+	minifiers: [
+		{
+			pattern: '"Tom Marvolo Riddle"',
+			replace: function(string) {
+				return '"I am Lord Voldemort"';
+			}
+		}
+	]
 });
 
 console.log(json);
@@ -28,8 +39,8 @@ console.log(json);
 Output:
 
 ```bash
-JSON-Slim: 87% of original.
-{"true":1,"false":0,"number":123e3,"numberString":123e3,"decimalFraction":123e-5,"decimalFractionString":123e-5,"exponent":123e3,"exponentString":123e3}
+JSON-Slim: 90% of original.
+{"true":1,"false":0,"number":123e3,"numberString":123e3,"decimalFraction":123e-5,"decimalFractionString":123e-5,"exponent":123e3,"exponentString":123e3,"customField":"I am Lord Voldemort"}
 ```
 
 ## Even less?

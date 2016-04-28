@@ -10,6 +10,16 @@ module.exports = function() {
 
 		var json        = '';
 		var inputString = '';
+		var minifiers   = [
+			{
+				pattern: '"?[\\d\\.eE\\+\\-]+"?',
+				replace: slimNumber
+			},
+			{
+				pattern: 'false|true',
+				replace: slimBoolean
+			}
+		];
 
 		// No pretty JSON in this joint
 		if (typeof input === 'string') {
@@ -19,13 +29,18 @@ module.exports = function() {
 			inputString = JSON.stringify(input);
 		}
 
+		// We deal only in strings
 		json = JSON.stringify(input);
 
-		// Apply minification functions
-		json = parseValues(json, '("?[\\d\\.eE\\+\\-]+"?)', slimNumber);
-		json = parseValues(json, '(false|true)', slimBoolean);
+		// Custom slimming functions
+		if (options.minifiers && Array.isArray(options.minifiers) && options.minifiers.length > 0) {
+			minifiers = minifiers.concat(options.minifiers);
+		}
 
-		// @NOTE Here you could add support for custom slimming functions ;)
+		// Apply minification functions
+		minifiers.forEach(function(minifier) {
+			json = parseValues(json, minifier.pattern, minifier.replace);
+		});
 
 		if (options.report) {
 			console.log('JSON-Slim: ' + Math.floor(json.length / inputString.length * 100) + '% of original.');
@@ -41,7 +56,7 @@ module.exports = function() {
 	 * @return {Object[]} - Array of matched values, with index
 	 */
 	var getMatches = function(string, pattern) {
-		var regexp  = new RegExp('(?:[^\\\\]": ?)' + pattern + '(?:,|\\})', 'g');
+		var regexp  = new RegExp('(?:[^\\\\]": ?)(' + pattern + ')(?:,|\\})', 'g');
 		var matches = [];
 		var match   = regexp.exec(string);
 
