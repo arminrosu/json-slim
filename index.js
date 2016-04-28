@@ -86,16 +86,6 @@ module.exports = function() {
 	};
 
 	/**
-	 * Check if a string contains a number.
-	 * @see {@link http://stackoverflow.com/a/35759874/584441|Stackoverflow source}
-	 * @param  {string} string
-	 * @return {Boolean}
-	 */
-	var isNumber = function(string) {
-		return !isNaN(string) && !isNaN(parseFloat(string));
-	};
-
-	/**
 	 * Represent Number in a shorter form
 	 * @param  {string} input
 	 * @return {string}
@@ -103,7 +93,8 @@ module.exports = function() {
 	var slimNumber = function(input) {
 		var string = input.replace(/"/g, '');
 
-		if (!isNumber(string)) {
+		// Check if the string contains a number
+		if (isNaN(string) || isNaN(parseFloat(string))) {
 			return input;
 		}
 
