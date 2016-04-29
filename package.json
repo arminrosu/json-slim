@@ -2,10 +2,6 @@
   "name": "json-slim",
   "version": "0.2.0",
   "description": "Minify JSON better than JSON.stringify()",
-  "main": "index.js",
-  "scripts": {
-    "test": "node test.js"
-  },
   "keywords": [
     "json",
     "minify",
@@ -15,6 +11,26 @@
     "slim",
     "kate-moss"
   ],
+  "homepage": "https://github.com/arminrosu/json-slim",
+  "bugs": {
+    "url": "https://github.com/arminrosu/json-slim/issues"
+  },
+  "license": "MIT",
   "author": "Armin Roșu <hello@armin.ro> (http://armin.ro)",
-  "license": "MIT"
+  "files": [
+    "index.js",
+    "test.js"
+  ],
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arminrosu/json-slim.git"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "engines": {
+    "node": ">=5",
+    "npm": ">=3"
+  }
 }
