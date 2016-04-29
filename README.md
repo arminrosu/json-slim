@@ -3,9 +3,11 @@
 [![Build Status](https://travis-ci.org/arminrosu/json-slim.svg?branch=master)](https://travis-ci.org/arminrosu/json-slim)
 [![Dependencies](https://david-dm.org/arminrosu/json-slim.svg)](https://david-dm.org/arminrosu/json-slim)
 
-Minify JSON better than JSON.stringify().
+Minify JSON better than `JSON.stringify()`.
 
-It achieves this by converting Numbers, number Strings and Booleans to a shorter form. You should be aware of this in your application, type checks might fail.
+It achieves this by converting Numbers, number Strings and Booleans to a shorter form. Unicode characters are converted automatically by _JSON.stringify()_, which is used internally.
+
+You should be aware of the potential type conversion _json-slim_ performs, as type checks in your application might fail.
 
 ## Installation
 
@@ -19,15 +21,10 @@ npm i json-slim
 var slim = require('json-slim');
 
 var json = slim({
-	true:                  true,
-	false:                 false,
-	number:                123000,
-	numberString:          '123000',
-	decimalFraction:       0.00123,
-	decimalFractionString: '0.00123',
-	exponent:              1.23E+5,
-	exponentString:        '1.23e+5',
-	customField:           'Tom Marvolo Riddle'
+	boolean:     true,
+	number:      '123000',
+	unicode:     '\u03A9',
+	customField: 'Tom Marvolo Riddle'
 }, {
 	// JSON-slim reports only to you
 	report:    true,
@@ -49,11 +46,11 @@ console.log(json);
 Output:
 
 ```bash
-JSON-Slim: 90% of original.
+JSON-Slim: 93% of original.
 ```
 
 ```bash
-{"true":1,"false":0,"number":123e3,"numberString":123e3,"decimalFraction":123e-5,"decimalFractionString":123e-5,"exponent":123e3,"exponentString":123e3,"customField":"I am Lord Voldemort"}
+{"boolean":1,"number":123e3,"unicode":"Ω","customField":"I am Lord Voldemort"}
 ```
 
 ## Even less?
