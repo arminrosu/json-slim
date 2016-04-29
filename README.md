@@ -1,6 +1,7 @@
 # JSON-Slim
 
 [![Build Status](https://travis-ci.org/arminrosu/json-slim.svg?branch=master)](https://travis-ci.org/arminrosu/json-slim)
+[![Dependencies](https://david-dm.org/arminrosu/json-slim.svg)](https://david-dm.org/arminrosu/json-slim)
 
 Minify JSON better than JSON.stringify().
 
@@ -28,7 +29,7 @@ var json = slim({
 	exponentString:        '1.23e+5',
 	customField:           'Tom Marvolo Riddle'
 }, {
-	// JSON-slim reports only to you, how good a job it did.
+	// JSON-slim reports only to you
 	report:    true,
 	// You can add your own minifiers too
 	minifiers: [
@@ -49,6 +50,9 @@ Output:
 
 ```bash
 JSON-Slim: 90% of original.
+```
+
+```bash
 {"true":1,"false":0,"number":123e3,"numberString":123e3,"decimalFraction":123e-5,"decimalFractionString":123e-5,"exponent":123e3,"exponentString":123e3,"customField":"I am Lord Voldemort"}
 ```
 
