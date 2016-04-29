@@ -1,6 +1,6 @@
 {
   "name": "json-slim",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Minify JSON better than JSON.stringify()",
   "keywords": [
     "json",
