@@ -5,12 +5,10 @@ module.exports = function() {
 	 * @param  {object} options
 	 * @return {string}
 	 */
-	var slim = function(input, options) {
-		options = options || {};
-
-		var json        = '';
-		var inputString = '';
-		var minifiers   = [
+	var slim = (input, options = {}) => {
+		let json        = '';
+		let inputString = '';
+		let minifiers   = [
 			{
 				pattern: '"?[\\d\\.eE\\+\\-]+"?',
 				replace: slimNumber
@@ -38,7 +36,7 @@ module.exports = function() {
 		}
 
 		// Apply minification functions
-		minifiers.forEach(function(minifier) {
+		minifiers.forEach(minifier => {
 			json = parseValues(json, minifier.pattern, minifier.replace);
 		});
 
@@ -55,10 +53,10 @@ module.exports = function() {
 	 * @param  {string} pattern - RegExp pattern that matches the value (only!)
 	 * @return {Object[]} - Array of matched values, with index
 	 */
-	var getMatches = function(string, pattern) {
-		var regexp  = new RegExp('(?:[^\\\\]":|\\[?)(' + pattern + ')(?:[,\\]\\}])', 'g');
-		var matches = [];
-		var match   = regexp.exec(string);
+	var getMatches = (string, pattern) => {
+		const regexp = new RegExp('(?:[^\\\\]":|\\[?)(' + pattern + ')(?:[,\\]\\}])', 'g');
+		let matches  = [];
+		let match    = regexp.exec(string);
 
 		while (match != null) {
 			matches.push({
@@ -79,7 +77,7 @@ module.exports = function() {
 	 * @param  {integer} start - Index at which to start changing the string
 	 * @return {string}
 	 */
-	var spliceStrings = function(haystack, needle, replacement, start) {
+	var spliceStrings = (haystack, needle, replacement, start) => {
 		return haystack.substring(0, start) + replacement + haystack.substring(start + needle.length);
 	};
 
@@ -90,13 +88,13 @@ module.exports = function() {
 	 * @param  {Function} callback
 	 * @return {string}
 	 */
-	var parseValues = function(json, pattern, callback) {
-		var matches = getMatches(json, pattern);
+	var parseValues = (json, pattern, callback) => {
+		let matches = getMatches(json, pattern);
 		matches.reverse();
 
 		// Replace them with shorter versions
 		// In reverse order so we don't affect indexes
-		matches.forEach(function(match) {
+		matches.forEach(match => {
 			json = spliceStrings(json, match.string, callback(match.string), match.index);
 		});
 
@@ -108,24 +106,24 @@ module.exports = function() {
 	 * @param  {string} input
 	 * @return {string}
 	 */
-	var slimNumber = function(input) {
-		var string = input.replace(/"/g, '');
+	var slimNumber = input => {
+		let string = input.replace(/"/g, '');
 
 		// Check if the string contains a number
 		if (isNaN(string) || isNaN(parseFloat(string))) {
 			return input;
 		}
 
-		var value = parseFloat(string);
+		let value = parseFloat(string);
 
 		// Exponential
 		// Exponential notation is positive by default
-		var exp = value.toExponential().replace('+', '');
+		let exp = value.toExponential().replace('+', '');
 
 		// Remove "." from exponential notation when possible.
 		// E.g. 1.23e6 = 123e4
-		var digitsPastDot = exp.indexOf('e') - exp.indexOf('.') - 1;
-		var exponent      = parseInt(exp.substring(exp.indexOf('e') + 1), 10);
+		let digitsPastDot = exp.indexOf('e') - exp.indexOf('.') - 1;
+		let exponent      = parseInt(exp.substring(exp.indexOf('e') + 1), 10);
 		exp = exp.replace('e' + exponent, 'e' + (exponent - digitsPastDot)).replace('.', '');
 
 		if (string.length > exp.length) {
@@ -140,7 +138,7 @@ module.exports = function() {
 	 * @param  {string} input
 	 * @return {string}
 	 */
-	var slimBoolean = function(input) {
+	var slimBoolean = input => {
 		if (input === 'true') {
 			return '1';
 		}
