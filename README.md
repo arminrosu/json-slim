@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/arminrosu/json-slim.svg?branch=master)](https://travis-ci.org/arminrosu/json-slim)
 [![Dependencies](https://david-dm.org/arminrosu/json-slim.svg)](https://david-dm.org/arminrosu/json-slim)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 Minify JSON better than `JSON.stringify()`.
 
@@ -17,40 +18,44 @@ npm i json-slim
 
 ## Example
 
-```js
+```javascript
 var slim = require('json-slim');
 
-var json = slim({
-	boolean:     true,
-	number:      '123000',
-	unicode:     '\u03A9',
-	customField: 'Tom Marvolo Riddle'
-}, {
-	// JSON-slim reports only to you
-	report:    true,
-	// You can add your own minifiers too
-	minifiers: [
-		{
-			// RegExp Pattern
-			pattern: '"Tom Marvolo Riddle"',
-			replace: function(string) {
-				return '"I am Lord Voldemort"';
-			}
-		}
-	]
-});
+var input = {
+  boolean: true,
+  number: '123000',
+  unicode: '\u03B1 and \u03A9',
+  customField: 'Tom Marvolo Riddle'
+}
+
+var json = slim(input, {
+  // report how much space it saved
+  report: true,
+  // You can add your own minifiers too
+  minifiers: [
+    {
+      // RegExp Pattern
+      pattern: '"Tom Marvolo Riddle"',
+      replace: function (string) {
+        return '"I am Lord Voldemort"'
+      }
+    }
+  ]
+})
 
 console.log(json);
 ```
 
-Output:
+**Output**
 
+*Report*. Note: the bigger the original JSON, the bigger the savings are.
 ```bash
-JSON-Slim: 93% of original.
+JSON-Slim: 94% of original.
 ```
 
-```bash
-{"boolean":1,"number":123e3,"unicode":"Ω","customField":"I am Lord Voldemort"}
+*Result*
+```javascript
+{"boolean":1,"number":123e3,"unicode":"α and Ω","customField":"I am Lord Voldemort"}
 ```
 
 ## Even less?
