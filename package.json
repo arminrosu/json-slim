@@ -27,10 +27,13 @@
     "url": "https://github.com/arminrosu/json-slim.git"
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "standard && node test.js"
   },
   "engines": {
     "node": ">=6.0.0",
     "npm": ">=3"
+  },
+  "devDependencies": {
+    "standard": "*"
   }
 }
